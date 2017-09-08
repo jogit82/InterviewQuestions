@@ -1,0 +1,105 @@
+1) Find the element that appears once in a sorted array where all other elements appear twice one after another. Find that element in 0(logn) complexity.
+Input:   arr[] = {1, 1, 3, 3, 4, 5, 5, 7, 7, 8, 8}
+Output:  4 
+Answer:
+public static void FindAppearOnce(int[] arr, int low, int high){
+    if (low > high) 
+        return;
+    if (low == high)
+    {
+        Console.WriteLine(arr[low]);
+        return;
+    }
+
+    int mid = (low + high) / 2;
+    if (mid % 2 == 0)
+    {
+        if (arr[mid] == arr[mid + 1])
+            FindAppearOnce(arr, mid + 2, high);
+        else
+            FindAppearOnce(arr, low, mid);
+    }
+    else if (mid % 2 == 1)
+    {
+        if (arr[mid] == arr[mid - 1])
+            FindAppearOnce(arr, mid + 1, high);
+        else
+            FindAppearOnce(arr, low, mid - 1);
+    }
+}
+
+
+2) A magic index in an array A[0…n-1] is defined to be an index such that A[i] = i. Given a sorted array of distinct integers, write a method to find a magic index if one exists, in an array A. FOLLOW UP: What if the values are not distinct?
+Answer:
+public static int MagicIndex(int[] arr, int low, int high) {
+    if (high >= low){
+        int mid = (low + high) / 2;
+        if (mid == arr[mid]) 
+            return mid;
+        if (mid > arr[mid]) 
+            return MagicIndex(arr, mid + 1, high);
+        else
+            return MagicIndex(arr, low, mid - 1);
+    }
+    return -1;
+}
+
+4) Given a sorted array of n integers that has been rotated an unknown number of times, write code to find an element in the array. You may assume that the array was originally sorted in increasing order.
+Answer:
+public static int findElement(int[] arr, int low, int high, int key){
+    if (low > high) 
+        return -1;
+    int mid = (low + high) / 2;
+    if (arr[mid] == key) 
+        return mid;
+    if (arr[low] <= arr[mid]) // sorted array on the left side?
+    { 
+        if (key >= arr[low] && key <= arr[mid])
+            return findElement(arr, low, mid - 1, key);
+        else
+            return findElement(arr, mid + 1, high, key);
+    }
+    if (key >= arr[mid] && key <= arr[high])
+        return findElement(arr, mid + 1, high, key);
+    else
+        return findElement(arr, low, mid - 1, key);
+}
+
+5) Given an array that contains numbers from 1 to n-1 and exactly 1 duplicate, find that duplicate.
+Search an element in an array where difference between adjacent elements is 1.
+For example: arr[] = {8, 7, 6, 7, 6, 5, 4, 3, 2, 3, 4, 3}
+Search for 3 and Output: Found at index 7
+Answer:
+public static int findEl(int[] arr, int n, int key){
+    int i = 0;
+    while (i < n){
+        if (arr[i] == key) 
+            return i;
+        else 
+            i += Math.Abs(arr[i] - key);
+    }
+    return -1;
+}
+
+6) Given an array of numbers, split the array into two where one array contains the sum of n-1 numbers and the other array with all the n-1 elements.
+// Assuming the question is asking for two subarrays with equal sum?
+Answer:
+public static int findSplitPoint(int[] arr, int n) {
+    int leftSum = 0;
+    for (int i = 0; i < n; i ++) 
+    {
+        leftSum += arr[i];
+    }
+
+    int rightSum = 0;
+    for (int i = n - 1; i >= 0; i --) 
+    {
+        // add current element to right sum, subtract from left sum
+        rightSum += arr[i];
+        leftSum -= arr[i];
+
+        if (rightSum == leftSum) 
+            return i;
+    }
+    return -1;
+}
