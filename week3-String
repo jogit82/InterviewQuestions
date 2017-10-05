@@ -1,0 +1,79 @@
+Question 1-Implement an algorithm to determine if a string has all unique characters. What if you cannot use additional data structures?
+Answer:
+public static Boolean uniqueChar(string s) 
+    {
+        char[] c = s.ToCharArray();
+
+        Array.Sort(c);
+
+        for (int i = 0;i < c.Length-1;i++)
+        {
+            if(c[i]!=c[i+1])
+                continue;
+            else
+                return false;
+        }
+        return true;
+    }
+
+Question 2-Given two strings, write a method to decide if one is a permutation of the other?
+Answer:
+public static Boolean arePermutations(string s1, string s2)
+    {
+        
+        if(s1.Length != s2.Length)
+        {
+            return false;
+        }
+
+        Dictionary<char, int> dict = new Dictionary<char, int>();
+        int count = 0;
+        foreach(char c in s1)
+        {
+            if(dict.ContainsKey(c))
+            {
+                dict.TryGetValue(c, out count);
+                dict[c] = count + 1;
+            }
+            else
+            {
+                dict.Add(c, 1);
+            }
+        }
+
+        foreach(char c in s2)
+        {
+            if(dict.ContainsKey(c))
+            {
+                dict.TryGetValue(c, out count);
+                count--;
+                if(count < 0)
+                {
+                    return false;
+                }
+                dict[c] = count;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+Question 3-Write a method to replace all spaces in a string with ‘%20’.
+Answer:
+
+Question 4-Implement a method to perform a basic string compression using the counts of repeated characters. For example, the string aabccccaaa would become a2b1c4a3. If the compressed string would not become smaller than the original string, your method should return the original string.
+Answer:
+
+Question 5-Write an algorithm such that if an element in an MxN matrix is 0, its entire row and column are set to 0.
+Answer:
+
+Question 6-Given two sequences, print longest common subsequence
+LCS for input Sequences “ABCDGH” and “AEDFHR” is “ADH” of length 3.
+LCS for input Sequences “AGGTAB” and “GXTXAYB” is “GTAB” of length 4.
+Answer:
+
+

@@ -92,4 +92,38 @@ Answer:
 
 3) Reverse a stack and put the reversed value back in the same stack. You can use only one other stack and a temp variable.
 Answer: 
+public static void printValues(IEnumerable myCollection)
+        {
+            foreach (Object obj in myCollection) 
+            {
+                Console.Write(obj);
+            }
+        }
 
+        public static void reverseStack() 
+        {
+            char[] myArray = new char[myStack1.Count];
+            for (int i = 0; i < myStack1.Count; i ++)
+            {
+                myArray[i] = myStack1.Pop();
+            }
+
+            for (int i = 0; i < myArray.Length; i ++)
+            {
+                myStack1.Push(myArray[i]);
+            }
+        }
+            
+        public static void Main(string[] args)
+        {
+            
+            myStack1.Push('a');
+            myStack1.Push('b');
+            myStack1.Push('c');
+            myStack1.Push('d');
+
+            printValues(myStack1);
+            Console.WriteLine();
+            reverseStack();
+            printValues(myStack1);
+        }
