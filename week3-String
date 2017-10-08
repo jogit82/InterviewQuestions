@@ -19,54 +19,145 @@ public static Boolean uniqueChar(string s)
 Question 2-Given two strings, write a method to decide if one is a permutation of the other?
 Answer:
 public static Boolean arePermutations(string s1, string s2)
+{
+    if(s1.Length != s2.Length)
     {
-        
-        if(s1.Length != s2.Length)
-        {
-            return false;
-        }
+        return false;
+    }
 
-        Dictionary<char, int> dict = new Dictionary<char, int>();
-        int count = 0;
-        foreach(char c in s1)
+    Dictionary<char, int> dict = new Dictionary<char, int>();
+    int count = 0;
+    foreach(char c in s1)
+    {
+        if(dict.ContainsKey(c))
         {
-            if(dict.ContainsKey(c))
-            {
-                dict.TryGetValue(c, out count);
-                dict[c] = count + 1;
-            }
-            else
-            {
-                dict.Add(c, 1);
-            }
+            dict.TryGetValue(c, out count);
+            dict[c] = count + 1;
         }
-
-        foreach(char c in s2)
+        else
         {
-            if(dict.ContainsKey(c))
-            {
-                dict.TryGetValue(c, out count);
-                count--;
-                if(count < 0)
-                {
-                    return false;
-                }
-                dict[c] = count;
-            }
-            else
+            dict.Add(c, 1);
+        }
+    }
+
+    foreach(char c in s2)
+    {
+        if(dict.ContainsKey(c))
+        {
+            dict.TryGetValue(c, out count);
+            count--;
+            if(count < 0)
             {
                 return false;
             }
+            dict[c] = count;
         }
-
-        return true;
+        else
+        {
+            return false;
+        }
     }
 
+    return true;
+}
+
 Question 3-Write a method to replace all spaces in a string with ‘%20’.
+Assumptions: the string has sufficient space at the end to hold additional characters and given the true length of the string
 Answer:
+public static void replaceString(string st)
+{
+    char[] s = st.ToCharArray();
+    int numOfSpaces = 0;
+    int i;
+    for (i = 0; i < s.Length; i++)
+    {
+        if (s[i] == ' ')
+        {
+            numOfSpaces++;
+        }
+    }
+
+    while(s[i-1] == ' ')
+    {
+        numOfSpaces--;
+        i--;
+    }
+
+    int neededLength = i + numOfSpaces * 2;
+    if(neededLength > s.Length + 1)
+    {
+        Console.Write("New string is longer than given string");
+        return;
+    }
+
+    int index = neededLength - 1; // fill from the back
+    for (int j = i - 1; j >= 0;j--)
+    {
+        if(s[j]==' ')
+        {
+            s[index] = '0';
+            s[index-1] = '2';
+            s[index-2] = '%';
+            index = index - 3;
+        }
+        else
+        {
+            s[index] = s[j];
+            index--;
+        }
+    }
+
+    foreach(char c in s) 
+    {
+        Console.Write(c);
+    }
+    
+}
 
 Question 4-Implement a method to perform a basic string compression using the counts of repeated characters. For example, the string aabccccaaa would become a2b1c4a3. If the compressed string would not become smaller than the original string, your method should return the original string.
 Answer:
+public static void Main(string[] args)
+{
+    string s = "bbbb";
+    StringBuilder sb = new StringBuilder();
+    char temp = ' ';
+    int count = 0;
+    for(int i = 0; i <= s.Length;i++)
+    {
+        if(i == 0){
+            temp = s[i];
+            count ++;
+        }
+
+        else if(i == s.Length)
+        {
+            sb.Append(temp);
+            sb.Append(count);
+        }
+
+        else
+        {
+            if (s[i] == s[i - 1])
+            {
+                count++;
+            }
+            else
+            {
+                sb.Append(temp);
+                sb.Append(count);
+
+                count = 1;
+                temp = s[i];
+            }
+        }
+    }
+
+    if(sb.Length < s.Length)
+        Console.WriteLine(sb);
+    else
+        Console.WriteLine(s);
+
+}
 
 Question 5-Write an algorithm such that if an element in an MxN matrix is 0, its entire row and column are set to 0.
 Answer:
