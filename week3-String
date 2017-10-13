@@ -161,10 +161,174 @@ public static void Main(string[] args)
 
 Question 5-Write an algorithm such that if an element in an MxN matrix is 0, its entire row and column are set to 0.
 Answer:
+public static void setZeroes(int[,] mat)
+{
+    int x = mat.GetLength(1); // num of cols
+    if (x == 0) return;
+    int y = mat.GetLength(0); // num of rows
+
+    bool firstRow = scanRow(mat, 0);
+    bool firstCol = scanCol(mat, 0);
+
+    for (int i = 1; i < x; i++) 
+    {
+        if(scanRow(mat, i) == true)
+        {
+            mat[i, 0] = 0;
+        }
+    }
+
+    for (int i = 1; i < y; i++)
+    {
+        if(scanCol(mat, i) == true) 
+        {
+            mat[0, i] = 0;
+        }
+    }
+
+    for (int i = 1; i < x; i++)
+    {
+        for (int j = 1; j < y;j++)
+        {
+            if(mat[i, 0] == 0 || mat[0, j] == 0)
+            {
+                mat[i, j] = 0;
+            }
+        }
+    }
+
+    if (firstRow == true) 
+    {
+        for (int i = 0; i < x; i++)
+        {
+            mat[0, i] = 0;
+        }
+    }
+
+    if (firstCol == true)
+    {
+        for (int i = 0; i < x; i++)
+        {
+            mat[i, 0] = 0;
+        }
+    }
+
+    Console.WriteLine("Converted Matrix:");
+    printMatrix(mat);
+}
+
+public static void printMatrix(int[,] matrix)
+{
+    
+    int rowLength = matrix.GetLength(0);
+    int colLength = matrix.GetLength(1);
+
+    for (int i = 0; i < rowLength; i++)
+    {
+        for (int j = 0; j < colLength; j++)
+        {
+            Console.Write(string.Format("{0} ", matrix[i, j]));
+        }
+        Console.Write(Environment.NewLine + Environment.NewLine);
+    }
+}
+
+public static bool scanRow(int[,] matrix, int rowNumber)
+{
+    for(int i = 0; i < matrix.GetLength(0); i++)
+    {
+        if(matrix[rowNumber, i] == 0)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+public static Boolean scanCol(int[,] matrix, int colNumber)
+{
+    for (int i = 0; i < matrix.GetLength(1); i++)
+    {
+        if (matrix[i, colNumber] == 0)
+        {
+            return true;
+        }
+    }
+    return false;
+}
 
 Question 6-Given two sequences, print longest common subsequence
 LCS for input Sequences “ABCDGH” and “AEDFHR” is “ADH” of length 3.
 LCS for input Sequences “AGGTAB” and “GXTXAYB” is “GTAB” of length 4.
 Answer:
+public static void printLCS(string s1, string s2) 
+{
+    int m = s1.Length;
+    int n = s2.Length;
+    // make a new matrix with one extra row and column
+    int[,] matrix = new int[m+1, n+1];
+
+    // filling in the blanks!
+    for (int i = 0; i <= m; i++)
+    {
+        for (int j = 0; j <= n; j++)
+        {
+            // fill first row and first column with zeros
+            if(i==0 || j==0)
+            {
+                matrix[i, j] = 0;
+            }
+            else if(s1[i-1] == s2[j-1])
+            {
+                matrix[i, j] = matrix[i - 1, j - 1] + 1;
+            }
+            else
+            {
+                matrix[i, j] = Math.Max(matrix[i - 1, j], matrix[i, j - 1]);
+            }
+        }
+    }
+
+    // Length of LCS is matrix[m,n]
+    printMatrix(matrix);
+
+    // Now we backtrack(dynamic programming) to print the LCS
+    // Starting with bottom right corner(matrix[m,n]
+    int index = matrix[m, n];
+    int x = m, y = n;
+    int temp = index; // length of the LCS
+
+    // Array to keep the LCS string, with an extra element as terminating character
+    char[] lcs = new char[index + 1];
+    lcs[index] = '\0';
+
+    while(x>0 && y>0) // stops before index hit row 0 or column 0
+    {
+        // print if current chars are the same
+        if(s1[x-1] == s2[y-1])
+        {
+            lcs[index - 1] = s1[x - 1];
+            x--;
+            y--;
+            index--;
+        }
+
+        // if current chars not the same, we pick the max value of the two and index move to the larger value
+        else if(matrix[x-1,y] > matrix[x, y-1]) // left value is larger than top value, go to left, but don't print
+        {
+            x--;
+        }
+        else 
+        {
+            y--;
+        }
+    }
+
+    // Print the LCS
+    for (int k = 0; k <= temp;k++)
+    {
+        Console.Write(lcs[k]);
+    }
+}
 
 
