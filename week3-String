@@ -331,4 +331,83 @@ public static void printLCS(string s1, string s2)
     }
 }
 
+Question 7-Given two string str1 and str2, find the shortest string that has both str1 and str2 as subsequences.
+Examples:
+Input: str1="aggtab", str="gxtxayb"
+Output: "agxgtxayb"
+Answer:
+Using the LCS algorithm in Q6 to acquire lcs, I then compare str1-str2-lcs using the following algorithm
+public static void shortestSubsequence(string s1, string s2, char[] s3)
+{
+    int i = 0, j = 0, k = 0;
+    while (i<s1.Length)
+    {
+        if (s1[i] != s2[j] || s1[i] != s3[k])
+        {
+            if (s1[i] == s2[j])
+            {
+                Console.Write(s3[k]);
+                k++;
+            }
+            else if (s1[i] == s3[k])
+            {
+                Console.Write(s2[j]);
+                j++;
+            }
+            else
+            {
+                Console.Write(s1[i]);
+                i++;
+            }
+        }
+        else
+        {
+            Console.Write(s1[i]);
+            i++;
+            j++;
+            k++;
+        }
+    }
+}
 
+
+Question 8-Remove spaces from a given string in O9n) running time and only one traversal of a string
+Input: "I love ice cream"
+Output:"Iloveicecream"
+Answer:
+public static void removeSpaces(string s1)
+{
+    char[] s = s1.ToCharArray();
+    int k = 0;
+    for (int i = 0; i < s.Length;i++)
+    {
+        if(s[i]!=' ')
+        {
+            if(s[k]==' ')
+            {
+                s[k] = s[i];
+                s[i] = ' ';
+                k++;
+            }
+            else
+            {
+                i++;
+                k++;
+            }
+        }
+        else if(s[i+1] == ' ')
+        {
+            i++;
+        }
+        else
+        {
+            s[k] = s[i + 1];
+            s[i + 1] = ' ';
+            i++;
+            k++;
+        }
+    }
+    string s2 = s.ToString();
+    s2.Trim();
+    Console.Write(s2);
+}
